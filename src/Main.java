@@ -28,7 +28,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
@@ -45,7 +48,7 @@ public class Main extends Application{
 	static Stage stage;
 	static Graph graph;
 	static ArrayList<String> input = new ArrayList<String>();
-	static Font fHeadline = new Font("Arial", 40);
+	static Font fHeadline = new Font("Arial", 45);
     static Font fSubheadline = new Font("Arial", 35);
     static Font fNormalText = new Font("Arial", 20);
 	static Font fSmallText = new Font("Arial", 15);
@@ -59,7 +62,12 @@ public class Main extends Application{
 	Group information;
 	Rectangle rInformation;
 	Text tInformation;
-	Label headline;
+	private static HBox hbHeading;
+		private static Label lHeadline;
+		private static Region rHeadlineSpacer;
+		private static VBox vbHeadline;
+			private static Label lHeadlineVersion;
+			private static Label lHeadlineBy;
 	Label lNodes;
 	Label lRelations;
 	Label lAddNode;
@@ -97,11 +105,9 @@ public class Main extends Application{
 		stage = new Stage();
 		sbRoot = new Group();
         root = new Group();
-    	stage.setTitle("Graph by Wolkenfarmer");
+    	stage.setTitle("Graph");
         mainScene = new Scene(sbRoot, 1200, 700, Color.grayRgb(40));
         stage.setScene(mainScene);
-        stage.setFullScreen(false);
-    	stage.setFullScreenExitHint("");
         stage.setResizable(true);   
         stage.show();
         
@@ -152,12 +158,38 @@ public class Main extends Application{
 	        tInformation.setY(rInformation.getY() + 50);
         information.getChildren().addAll(rInformation, tInformation);        
         
-        headline = new Label("Graph program");
-        headline.setFont(fHeadline);
-        headline.setTextFill(Color.WHITESMOKE);
-        headline.setLayoutX((mainScene.getWidth() - 890) * (2.0 / 5));
-        headline.setLayoutY(50);
-        root.getChildren().add(headline);
+        
+        
+        // Headline
+        hbHeading = new HBox();
+		hbHeading.setLayoutX((mainScene.getWidth() - 890) * (2.0 / 5));
+		hbHeading.setLayoutY(50);
+		hbHeading.setPrefWidth(890 + ((mainScene.getWidth() - 890) * (1.0 / 5)));
+			lHeadline = new Label();
+			lHeadline.setText("Graph program");
+			lHeadline.setTextFill(Color.WHITESMOKE);
+			lHeadline.setFont(fHeadline);
+			lHeadline.setAlignment(Pos.CENTER_LEFT);
+			
+			rHeadlineSpacer = new Region();
+			HBox.setHgrow(rHeadlineSpacer, Priority.ALWAYS);
+			
+			vbHeadline = new VBox();
+			vbHeadline.setAlignment(Pos.CENTER_RIGHT);
+				lHeadlineVersion = new Label();
+				lHeadlineVersion.setText("Version 1.0");
+				lHeadlineVersion.setTextFill(Color.WHITESMOKE);
+				lHeadlineVersion.setFont(Main.fNormalText);
+				lHeadlineVersion.setAlignment(Pos.TOP_RIGHT);
+				
+				lHeadlineBy = new Label();
+				lHeadlineBy.setText("By Wolkenfarmer");
+				lHeadlineBy.setTextFill(Color.WHITESMOKE);
+				lHeadlineBy.setFont(Main.fSmallTextItalic);
+				lHeadlineBy.setAlignment(Pos.BOTTOM_RIGHT);
+			vbHeadline.getChildren().addAll(lHeadlineVersion, lHeadlineBy);
+		hbHeading.getChildren().addAll(lHeadline, rHeadlineSpacer, vbHeadline);
+		root.getChildren().add(hbHeading);
         
         
         
@@ -408,7 +440,8 @@ public class Main extends Application{
 		    	double width = (double) newSceneWidth;
 		    	bground.setPrefWidth(width);
 		        sb.setLayoutX(width - sb.getWidth());
-		        headline.setLayoutX((width - 890) * (2.0 / 5));
+		        hbHeading.setLayoutX((width - 890) * (2.0 / 5));
+		        hbHeading.setPrefWidth(890 + ((mainScene.getWidth() - 890) * (1.0 / 5)));
 		        lNodes.setLayoutX((width - 890) * (2.0 / 5));
 		        lRelations.setLayoutX((width - 890) * (3.0 / 5) + 350);
 		        lAddNode.setLayoutX((width - 890) * (2.0 / 5));
