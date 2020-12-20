@@ -21,4 +21,4 @@ For compiling on other devices the classpath probabaly has to be fixed.
 
 ### Currently not under active development
 
-## Made only for the learning experience and fun - you run Graph at your own risk!
+## Made only for learning and fun - you run Graph at your own risk!
