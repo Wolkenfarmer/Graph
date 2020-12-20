@@ -59,9 +59,6 @@ public class Main extends Application{
 	static double programHeight;
 	static ScrollBar sb;
 	Button bground;
-	Group information;
-	Rectangle rInformation;
-	Text tInformation;
 	private static HBox hbHeading;
 		private static Label lHeadline;
 		private static Region rHeadlineSpacer;
@@ -133,30 +130,7 @@ public class Main extends Application{
         sb.setPrefWidth(20);
         sb.setPrefHeight(mainScene.getHeight());
         sb.setLayoutX(mainScene.getWidth()-sb.getWidth());
-        sbRoot.getChildren().add(sb);
-        
-        information = new Group();
-	        rInformation = new Rectangle();
-	        rInformation.setX(mainScene.getWidth() / 4);
-	        rInformation.setWidth(mainScene.getWidth() / 2);
-	        rInformation.setFill(Color.LIGHTGRAY);
-	        rInformation.setArcWidth(50);
-	        rInformation.setArcHeight(50);
-	        rInformation.setStrokeWidth(8);
-	        rInformation.setStrokeLineCap(StrokeLineCap.ROUND);
-	        rInformation.setStroke(Color.CORNFLOWERBLUE);
-	        
-	        tInformation = new Text();
-	        tInformation.setText("Thanks for using my program!\n\n"
-	        		+ "Developer: Wolkenfarmer\n"
-	        		+ "Made: 13.12.2019 - 12.01.2020");
-	        tInformation.setFont(fNormalText);
-	        tInformation.setWrappingWidth(rInformation.getWidth() - 80);
-	        tInformation.setLayoutX(rInformation.getX() + 40);
-	        rInformation.setHeight(tInformation.getBoundsInLocal().getHeight() + 80);
-	        rInformation.setY((mainScene.getHeight() - rInformation.getHeight()) / 2);
-	        tInformation.setY(rInformation.getY() + 50);
-        information.getChildren().addAll(rInformation, tInformation);        
+        sbRoot.getChildren().add(sb);     
         
         
         
@@ -183,7 +157,7 @@ public class Main extends Application{
 				lHeadlineVersion.setAlignment(Pos.TOP_RIGHT);
 				
 				lHeadlineBy = new Label();
-				lHeadlineBy.setText("By Wolkenfarmer");
+				lHeadlineBy.setText("by Wolkenfarmer");
 				lHeadlineBy.setTextFill(Color.WHITESMOKE);
 				lHeadlineBy.setFont(Main.fSmallTextItalic);
 				lHeadlineBy.setAlignment(Pos.BOTTOM_RIGHT);
@@ -239,7 +213,6 @@ public class Main extends Application{
         lvNodes.setMinSize(350, 200);
         lvNodes.setLayoutX((mainScene.getWidth() - 890) * (2.0 / 5));
         lvNodes.setLayoutY(260);
-        if (lvNodes.getItems().size() == 0) {lvNodes.setVisible(false);}
         root.getChildren().add(lvNodes);
         
         
@@ -308,7 +281,6 @@ public class Main extends Application{
         lvRelations.setPrefWidth(540);
         lvRelations.setLayoutX((mainScene.getWidth() - 890) * (3.0 / 5) + 350);
         lvRelations.setLayoutY(260);
-        if (lvRelations.getItems().size() == 0) {lvRelations.setVisible(false);}
         root.getChildren().add(lvRelations);
         
         
@@ -402,21 +374,9 @@ public class Main extends Application{
             	//input handling
                 String code = e.getCode().toString();
                 if (!input.contains(code)) input.add(code);
-                
-                //shows program information
-                if (input.contains("I") && !tfWeighting.isFocused() && !tfNodeName.isFocused() && !sbRoot.getChildren().contains(information)) {
-                	rInformation.setX(mainScene.getWidth() / 4);
-        	        rInformation.setWidth(mainScene.getWidth() / 2);
-        	        tInformation.setWrappingWidth(rInformation.getWidth() - 80);
-        	        tInformation.setLayoutX(rInformation.getX() + 40);
-        	        rInformation.setHeight(tInformation.getBoundsInLocal().getHeight() + 80);
-        	        rInformation.setY((mainScene.getHeight() - rInformation.getHeight()) / 2);
-        	        tInformation.setY(rInformation.getY() + 50);
-        	        
-                	sbRoot.getChildren().add(information);
-                }
             }
         });
+        
 		mainScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
             	// exit program
@@ -424,16 +384,12 @@ public class Main extends Application{
                 	Platform.exit();;
                 }
                 
-                //hides program information
-                if (input.contains("I") && !tfWeighting.isFocused() && !tfNodeName.isFocused()) {
-                	sbRoot.getChildren().remove(information);
-                }
-                
             	// input handling
                 String code = e.getCode().toString();
                 input.remove(code);
             }
         });
+		
 		// regroup object after resizing window
 		mainScene.widthProperty().addListener(new ChangeListener<Number>() {
 		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
@@ -468,17 +424,9 @@ public class Main extends Application{
 		        } else if (gc != null) {
 		        	showCircle();
 		        }
-		        if (sbRoot.getChildren().contains(information)) {
-		        	rInformation.setX(width / 4);
-			        rInformation.setWidth(width / 2);
-			        tInformation.setWrappingWidth(rInformation.getWidth() - 80);
-			        tInformation.setLayoutX(rInformation.getX() + 40);
-			        rInformation.setHeight(tInformation.getBoundsInLocal().getHeight() + 80);
-			        rInformation.setY((mainScene.getHeight() - rInformation.getHeight()) / 2);
-			        tInformation.setY(rInformation.getY() + 50);
-		        }
 		    }
 		});
+		
 		mainScene.heightProperty().addListener(new ChangeListener<Number>() {
 		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
 		    	double height = (double) newSceneHeight;
@@ -491,17 +439,15 @@ public class Main extends Application{
 		    		sb.setVisible(false);
 		    		root.setLayoutY(0);
 		    	}
-		    	if (sbRoot.getChildren().contains(information)) {
-			        rInformation.setY((height - rInformation.getHeight()) / 2);
-			        tInformation.setY(rInformation.getY() + 50);
-		        }
 		    }
 		});
+		
 		tfExceptions.heightProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				System.out.println(tfExceptions.getHeight() + " + " + tfExceptions.getLayoutY());
 			}
 		});
+		
 		// forces the textfield to be numeric only
 		tfWeighting.textProperty().addListener(new ChangeListener<String>() {
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -510,6 +456,7 @@ public class Main extends Application{
 		        }
 		    }
 		});
+		
 		// buttons
 		bNewNode.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
@@ -523,16 +470,19 @@ public class Main extends Application{
 				}
 	        }
 	    });
+		
 		bNewNode.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				bNewNode.setBackground(bGreenFocusedButton);
 			}
 	    });
+		
 		bNewNode.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				bNewNode.setBackground(bGreenButton);
 			}
 		});
+		
 		bNewRelation.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				tfExceptions.getChildren().clear();
@@ -551,16 +501,19 @@ public class Main extends Application{
 				}
 	        }
 	    });
+		
 		bNewRelation.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				bNewRelation.setBackground(bGreenFocusedButton);
 			}
 	    });
+		
 		bNewRelation.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				bNewRelation.setBackground(bGreenButton);
 			}
 		});
+		
 		bComputeD.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				if (tgDisplayFormat.getSelectedToggle() == rbAdjacencyMatrix) {
@@ -577,11 +530,13 @@ public class Main extends Application{
 				bComputeD.setBackground(bGreenFocusedButton);
 			}
 	    });
+		
 		bComputeD.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				bComputeD.setBackground(bGreenButton);
 			}
 		});
+		
 		// scroll bar
 		sb.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
@@ -601,11 +556,13 @@ public class Main extends Application{
 				}
 			}
 		});		
+		
 		sb.valueProperty().addListener(new ChangeListener<Number>() {
 		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
 		    	root.setLayoutY(-sb.getValue());
 		    }
 		});
+		
 		mainScene.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
 			public void handle(ScrollEvent e) {				
 				if (sb.isVisible()) {
@@ -618,9 +575,9 @@ public class Main extends Application{
 				}
 			}
 		});		
-                
         System.out.println("Finished building");
 	}
+	
 	
 	
 	public static void updateLvNodes() {
